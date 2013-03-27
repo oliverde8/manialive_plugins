@@ -34,7 +34,7 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->bg->setPosX(0);
         $this->bg->setSubStyle(\ManiaLib\Gui\Elements\BgsPlayerCard::BgCardSystem);
         $this->bg->setAlign('left', 'top');
-        $this->bg->setManialink("test");
+        $this->bg->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
         $this->addComponent($this->bg);
         
         $this->icon_status = new \ManiaLib\Gui\Elements\Quad($sizeY*0.6+0.6, $sizeY*0.6+0.6);

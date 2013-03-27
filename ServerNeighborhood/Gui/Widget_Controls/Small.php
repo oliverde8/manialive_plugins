@@ -21,7 +21,7 @@ class Small extends \ManiaLive\Gui\Control {
         $this->bg->setPosX(0);
         $this->bg->setSubStyle(\ManiaLib\Gui\Elements\BgsPlayerCard::BgCardSystem);
         $this->bg->setAlign('left', 'top');
-        $this->bg->setManialink("test");
+        $this->bg->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
         $this->addComponent($this->bg);
         
         $this->label_name = new \ManiaLib\Gui\Elements\Label($sizeX-6, $sizeY);
