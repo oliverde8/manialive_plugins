@@ -2,6 +2,7 @@
 
 namespace ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Widgets;
 
+use ManiaLib\Gui\Elements\Icons128x128_1;
 use \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Widget_Controls\Small;
 
 /**
@@ -25,7 +26,8 @@ class ServerPanel extends \ManiaLive\Gui\Window {
     private $bg;
     private $bg_title;
     private $label_title;
-    
+    private $icon_title;
+
     public function onConstruct() {
         $this->config = \ManiaLivePlugins\oliverde8\ServerNeighborhood\Config::getInstance();
 
@@ -48,10 +50,15 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $this->label_title->setScale(0.8);
         $this->label_title->setText("Server Neighborhood");
         $this->addComponent($this->label_title);
-        
+
+        $this->icon_title = new Icons128x128_1(5,5);
+        $this->icon_title->setPosition($this->getSizeX()-2,0);
+        $this->icon_title->setSubStyle(Icons128x128_1::ServersAll);
+        $this->addComponent($this->icon_title);
+
         $this->frame = new \ManiaLive\Gui\Controls\Frame();
         $this->frame->setAlign("left", "top");
-        $this->frame->setPosition(2, -(4*0.8)-3);
+        $this->frame->setPosition(2, -(4*0.8)-1);
         $this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
         $this->addComponent($this->frame);
     }
@@ -82,9 +89,13 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         else{
             $i = $this->lastStart % $nbOnline;
         }
+        $this->lastStart++;
+        
         $nbShown = 0;
         while($nbShown < $nbOnline && $nbShown < self::$xml_config->hud->nbElement){
-            $item = new Small($onlineServers[$i % $nbOnline]);
+            $className = '\\ManiaLivePlugins\\oliverde8\\ServerNeighborhood\\Gui\\Widget_Controls\\'.self::$xml_config->hud->style;
+            $item = new $className($nbShown, $onlineServers[$i % $nbOnline]);
+                
             if($this->first){
                 $this->first = false;
                 $this->setSizeY($item->getSizeY()*self::$xml_config->hud->nbElement + 6);
@@ -101,6 +112,7 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $this->bg->setSize($this->getSizeX(),$this->getSizeY());
         $this->bg_title->setSizeX($this->getSizeX()-2);
         $this->label_title->setSizeX($this->getSizeX()-4);
+        $this->icon_title->setPosX($this->getSizeX()-4);
     }
 
 }

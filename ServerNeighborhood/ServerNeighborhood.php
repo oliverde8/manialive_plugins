@@ -142,10 +142,11 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
     public function showWidget($servers) {
         $windows = ServerPanel::GetAll();
         if (empty($windows)) {
-            $windows[] = ServerPanel::Create(null);
+            $window = ServerPanel::Create(null);
+            $windows[] = $window;
+            $window->setSize($this->xml->hud->sizeX, 25);
         }
         foreach ($windows as $window) {
-            $window->setSize($this->xml->hud->sizeX, 25);
             $window->setPosition($this->xml->hud->posX, $this->xml->hud->posY);
             $window->update($servers);
             $window->show();
