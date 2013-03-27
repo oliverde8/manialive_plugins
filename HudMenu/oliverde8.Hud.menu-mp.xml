@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<settings>
+	<!--Style Settings-->
+	<style>
+		<!--Set the Opening Direction -->
+		<VerticalDirection>1</VerticalDirection><!-- 0: Down, 1: Up -->
+		<HorizentalDirection>1</HorizentalDirection><!-- 0: Right, 1: Left -->
+
+		<!-- When you click on a button that doesen't open a sub menu should it close all the menu -->
+		<closeOnClick>true</closeOnClick>
+		
+		<Menu>
+			<PosX>138</PosX>
+			<PosY>-71</PosY>
+		</Menu>
+		<Text>
+			<Size>1.8</Size>
+			<RootSize>2</RootSize>
+			<Color>$FFF</Color>
+			<ColorSeparator>$CCC$w</ColorSeparator>
+			<HorizontalAlign>left</HorizontalAlign>
+			<SizeX>18</SizeX>
+			<SizeY>2.5</SizeY>
+			<posX>1</posX>
+			<posY>-2</posY>
+			<textStyle></textStyle>
+		</Text>
+		<BackGround>
+			<SizeX>24</SizeX>
+			<SizeY>4.5</SizeY>
+			<MarginX>0</MarginX>
+			<MarginY>-0.5</MarginY>		
+		</BackGround>
+		<Icon>
+			<BigIcons>true</BigIcons> <!-- Will use as luch as 2 time more ressource to open a menu -->
+			<SizeX>4.5</SizeX>
+			<SizeY>4.5</SizeY>
+			<posX>0</posX>
+			<posY>0</posY>
+			<SizeBigX>6</SizeBigX>
+			<SizeBigY>6</SizeBigY>
+			<posBigX>-0.4</posBigX>
+			<posBigY>-0.45</posBigY>
+		</Icon>
+		<separator>
+			<Style>Bgs1InRace</Style>
+			<SubStyle>BgListLine</SubStyle>
+		</separator>
+		<button>
+			<Style>Bgs1InRace</Style>
+			<SubStyle>BgList</SubStyle>
+		</button>
+	</style>	
+
+		
+	<!--Menus setting-->	
+	<buttons>				
+		
+		
+		<button caption="Admin" style="Icons128x128_1" substyle="Padlock" needToBeAdmin="true">
+			<button caption="Basic Commands" style="Icons64x64_1" substyle="GenericButton">
+				<button plugin="Standard\Admin" caption="Next Map" chat="next"  style="Icons64x64_1" substyle="ArrowGreen"/>
+				<button plugin="Standard\Admin" caption="Restart Map" chat="restart" style="Icons64x64_1" substyle="ClipRewind"/>
+				<button plugin="Standard\Admin" caption="Chooss Gmae Mode" chat="setmode" style="Icons128x128_1" substyle="Options"/>
+			</button>
+
+			<button caption="ManiaLive" style="Icons128x128_1" substyle="Advanced">
+				<button plugin="Standard\Profiler"  caption="Profiler Start" chat="profile"/>
+				<button plugin="Standard\Profiler" caption="Profiler" chat="stats"/>
+				<button plugin="Standard\PluginManager" caption="Plugin Manager" chat="pluginManager"/>
+			</button>
+			
+		</button>
+		
+		<button caption="Menu" style="Icons128x128_1" substyle="United">
+			
+			<!--<button caption="Diğer Serverlar" style="Icons128x128_1" substyle="Multiplayer">
+				<button caption="TM.gen.tr Very Short" ManiaLink="tmtp://#join=oliver-server_3" style="Icons128x128_1" substyle="Multiplayer" />
+				<button caption="TM.gen.tr Minis" ManiaLink="tmtp://#join=oliver-server_4" style="Icons128x128_1" substyle="Multiplayer" />
+				<button caption="TM.gen.tr RPG" ManiaLink="tmtp://#join=oliver-server_5" style="Icons128x128_1" substyle="Multiplayer" />
+				<button caption="TM.gen.tr United" ManiaLink="tmtp://#join=oliver-server_7" style="Icons128x128_1" substyle="Multiplayer" />
+				
+			</button>-->
+			
+			<button caption="Links" style="Icons64x64_1" substyle="ButtonPlayers">
+				<button caption="Oliverde8 Web" Link="http://oliver-decramer.com/" />
+				<button caption="Oliverde8 Manialink" ManiaLink="oliverde8" />
+				
+				<button caption="Donate Oliverde8" style="Icons128x128_1" substyle="Coppers">
+					<button caption="Donate 10" ManiaLink="oliverde8:donate10?Donate=10&amp;user=oliverde8_menu"  style="Icons128x128_1" substyle="Coppers" />
+					<button caption="Donate 50" ManiaLink="oliverde8:donate50?Donate=50&amp;user=oliverde8_menu" style="Icons128x128_1" substyle="Coppers" />
+					<button caption="Donate 100" ManiaLink="oliverde8:donate100?Donate=100&amp;user=oliverde8_menu" style="Icons128x128_1" substyle="Coppers" />
+					<button caption="Donate 250" ManiaLink="oliverde8:donate250?Donate=250&amp;user=oliverde8_menu"  style="Icons128x128_1" substyle="Coppers" />
+					<button caption="Donate 500" ManiaLink="oliverde8:donate500?Donate=500&amp;user=oliverde8_menu" style="Icons128x128_1" substyle="Coppers" />
+				</button>
+				
+				<button caption="Forums" >
+					<button caption="TM-Forum" Link="http://www.tm-forum.com" />
+					<button caption="TrackMania.gen.tr" Link="http://trackmania.gen.tr/index.php" />
+					<button caption="TM le jeu" Link="http://www.trackmania-lejeu.com" />
+					<button caption="ManiaPlanet" Link="http://forum.maniaplanet.com" />
+				</button>
+				
+				<button caption="informative">
+					<button caption="Mania Creative" Link="http://www.mania-creative.com/" />
+					<button caption="ManiaPlanet Manialink" ManiaLink="exemple" />
+					<button caption="Fish TMstyles" Link="http://fish.stabb.de/styles/" />
+					<button caption="TrackMania Ladder" style="Icons128x128_1" substyle="LadderPoints" Link="http://en.tm-ladder.com/" />
+					<button caption="TM Rankings" Link="http://www.tm-rankings.com/" />				
+					<button caption="TM Teams" Link="http://www.tm-teams.com/" />				
+					<button caption="TM Actu" Link="http://tm-actu.com/" />				
+				</button>
+				
+				<button caption="File Sharing" style="Icons128x128_1" substyle="Share">
+					<button caption="ManiaExchange" Link="http://mania-exchange.com" />
+					<button caption="ManiaExchange TM2" Link="http://tm.mania-exchange.com" />
+					<button caption="ManiaPark" Link="http://www.maniapark.com/" style="Icons128x128_1" substyle="Vehicles" />
+					<button caption="TrackMania Tube" Link="http://www.tm-tube.com/" />					
+				</button>
+				
+				<button caption="Competitions" style="Icons64x64_1" substyle="RestartRace">
+					<button caption="ESL _ TMNF" Link="http://www.esl.eu/eu/tmnf" />
+					<button caption="ET Electronic Tournements" Link="http://www.et-generation.com/#oben" />
+				</button>
+			</button>
+			
+			<button caption="About" style="Icons128x128_1" substyle="Credits">
+				<button caption="Profiler" chat="stats"/>
+			</button>
+			
+			<button caption="Extras" style="Icons64x64_1" substyle="ToolRoot">
+				<button caption="AutoQueue">
+					<button plugin="Standard\AutoQueue" caption="Un Queue" chat="queue"/>
+					<button plugin="Standard\AutoQueue" caption="Queue" chat="unqueue"/>
+				</button>
+				<button caption="Donate to Server" style="Icons128x128_1" substyle="Coppers">
+					<button plugin="Standard\Bill" caption="10 Planets" chat="pay 10"/>
+					<button plugin="Standard\Bill" caption="50 Planets" chat="pay 50"/>
+					<button plugin="Standard\Bill" caption="100 Planets" chat="pay 100"/>
+					<button plugin="Standard\Bill" caption="250 Planets" chat="pay 250"/>
+					<button plugin="Standard\Bill" caption="500 Planets" chat="pay 500"/>
+				</button>
+			</button>
+			
+			<button caption="Maps" style="Icons128x128_1" substyle="ProfileVehicle">
+				<button caption="Vote" style="Icons128x128_1" substyle="Inputs">
+					<button plugin="Standard\Bill" caption="Vote GOOD" chat="++" style="Icons64x64_1" substyle="StateSuggested"/>
+					<button plugin="Standard\Bill" caption="Vote BAD" chat="--" style="Icons64x64_1" substyle="YellowLow"/>
+				</button>
+			</button>
+			
+			<button caption="Records" style="Icons128x128_1" substyle="Replay">
+				<button caption="Dedimania Records" params="null" plugin="Standard\Dedimania" function="showRecordWindow"/>
+				<!-- Compatible with the future version of MLEPP\LocalRecords and the current one -->
+				<button caption="Local Records"  params="null" plugin="MLEPP\LocalRecords" function="showRecordsWindow" style="BgRaceScore2" substyle="ScoreLink"/>
+				<button caption="Local Records" plugin="MLEPP\LocalRecords" function="recordList" style="BgRaceScore2" substyle="ScoreLink"/>
+			</button>		
+
+			  
+		</button>
+	</buttons>
+</settings>
+
+
