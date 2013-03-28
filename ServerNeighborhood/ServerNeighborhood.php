@@ -37,7 +37,17 @@ namespace ManiaLivePlugins\oliverde8\ServerNeighborhood;
 use ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Widgets\ServerPanel;
 
 class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
-
+    
+    public static $gamemodes = array(
+		0 => array('name' => 'SCRIPT',		'icon' => 'RT_Script'),
+		1 => array('name' => 'ROUNDS',		'icon' => 'RT_Rounds'),
+		2 => array('name' => 'TIME_ATTACK',	'icon' => 'RT_TimeAttack'),
+		3 => array('name' => 'TEAM',		'icon' => 'RT_Team'),
+		4 => array('name' => 'LAPS',		'icon' => 'RT_Laps'),
+		5 => array('name' => 'CUP',         'icon' => 'RT_Cup'),
+		6 => array('name' => 'STUNTS',		'icon' => 'RT_Stunts'),
+	);
+    
     private $server;
     private $servers = array();
     private $lastSent = 0;
@@ -55,6 +65,7 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
         $this->server = new Server();
         $this->server->create_fromConnection($this->connection, $this->storage);
 
+        $this->registerChatCommand('servers', 'showServerList', 0, true);
         //Creating database
         /* try {
           $this->enableDatabase();
@@ -151,6 +162,17 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
             $window->update($servers);
             $window->show();
         }
+    }
+    
+    public function showServerList($login){
+        Gui\Windows\ServerList::Erase($login);
+        $w = Gui\Windows\ServerList::Create($login);
+        $w->setTitle('ServerNeighborhood - Server List');
+        $w->setSize(120, 105);
+        $w->setServers($this->servers);
+        $w->centerOnScreen();
+		$w->show();
+        
     }
 
 }

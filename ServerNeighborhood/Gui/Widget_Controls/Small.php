@@ -13,7 +13,7 @@ class Small extends \ManiaLive\Gui\Control {
     private $bg;
     private $label_name;
     
-    function __construct($i, Server $server){
+    function __construct($i, $ctr, Server $server){
         
         $sizeX = 20;
         $sizeY = 4;

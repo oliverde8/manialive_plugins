@@ -84,7 +84,7 @@ class ServerPanel extends \ManiaLive\Gui\Window {
             }
         }
 
-        if(self::$xml_config->hud->nbElement > $nbOnline)
+        if(self::$xml_config->hud->nbElement >= $nbOnline)
             $i = 0;
         else{
             $i = $this->lastStart % $nbOnline;
@@ -94,7 +94,7 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $nbShown = 0;
         while($nbShown < $nbOnline && $nbShown < self::$xml_config->hud->nbElement){
             $className = '\\ManiaLivePlugins\\oliverde8\\ServerNeighborhood\\Gui\\Widget_Controls\\'.self::$xml_config->hud->style;
-            $item = new $className($nbShown, $onlineServers[$i % $nbOnline]);
+            $item = new $className($nbShown, $this, $onlineServers[$i % $nbOnline]);
                 
             if($this->first){
                 $this->first = false;
@@ -114,7 +114,13 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $this->label_title->setSizeX($this->getSizeX()-4);
         $this->icon_title->setPosX($this->getSizeX()-4);
     }
-
+    
+    
+    public function windowDetails($login, $server){
+        \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\ServerList::Erase($login);
+        $w = \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\ServerList::Create($login);
+        //$w->setServers()
+    }
 }
 
 ?>

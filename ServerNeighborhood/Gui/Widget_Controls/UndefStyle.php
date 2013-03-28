@@ -10,15 +10,9 @@ use ManiaLivePlugins\oliverde8\ServerNeighborhood\Server;
  */
 class UndefStyle extends \ManiaLive\Gui\Control {
     
-    public static $gamemodes = array(
-		0 => array('name' => 'SCRIPT',		'icon' => 'RT_Script'),
-		1 => array('name' => 'ROUNDS',		'icon' => 'RT_Rounds'),
-		2 => array('name' => 'TIME_ATTACK',	'icon' => 'RT_TimeAttack'),
-		3 => array('name' => 'TEAM',		'icon' => 'RT_Team'),
-		4 => array('name' => 'LAPS',		'icon' => 'RT_Laps'),
-		5 => array('name' => 'CUP',         'icon' => 'RT_Cup'),
-		6 => array('name' => 'STUNTS',		'icon' => 'RT_Stunts'),
-	);
+    
+    
+    private $action;
     
     private $bg;
     private $label_name;
@@ -26,7 +20,7 @@ class UndefStyle extends \ManiaLive\Gui\Control {
     private $icon_status, $icon_game, $icon_player, $icon_specs, $icon_ladder;
     private $label_nbPlayers, $label_nbSpecs, $label_ladder;
     
-    function __construct($i, Server $server){
+    function __construct($i, $ctr, Server $server){
         
         $sizeX = $this->getSizeX();
         $sizeY = 8;
@@ -54,7 +48,7 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->icon_game->setPosY(-0.4);
         $this->icon_game->setPosX($this->getSizeX()-4);
         $this->icon_game->setStyle('Icons128x32_1');
-        $this->icon_game->setSubStyle(self::$gamemodes[(int)$server->getServer_data()->server->gamemode]['icon']);
+        $this->icon_game->setSubStyle(\ManiaLivePlugins\oliverde8\ServerNeighborhood\ServerNeighborhood::$gamemodes[(int)$server->getServer_data()->server->gamemode]['icon']);
         $this->addComponent($this->icon_game);
         
         $this->icon_player = new \ManiaLib\Gui\Elements\Icons64x64_1(2.5,2.5);
@@ -113,6 +107,8 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->sizeY = $sizeY*0.6+1;
 
         $this->label_name->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
+        
+        $this->action = $this->createAction(array($ctr, 'windowDetails'), $server);
     }
     
     public function onResize($oldX, $oldY) {
@@ -128,6 +124,10 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         
         $this->icon_ladder->setPosX($this->getSizeX()-8);
         $this->label_ladder->setPosX($this->icon_ladder->getPosX()+2);
+    }
+    
+    public function destroy() {
+        parent::destroy();
     }
     
 }
