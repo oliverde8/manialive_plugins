@@ -9,7 +9,7 @@ use ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Controls\ServerItem;
  *
  * @author oliverde8
  */
-class ServerList extends \ManiaLive\Gui\ManagedWindow{
+class PlayerList extends \ManiaLive\Gui\ManagedWindow{
     
     private $pager;
     private $items = array();
@@ -22,7 +22,7 @@ class ServerList extends \ManiaLive\Gui\ManagedWindow{
         $this->addComponent($this->pager);      
     }
     
-    public function setServers($servers){
+    public function setServer($server){
         
         $this->pager->clearItems();
         foreach ($this->items as $item) {
@@ -31,14 +31,8 @@ class ServerList extends \ManiaLive\Gui\ManagedWindow{
         $this->items = array();
         
         $i = 1;
-        foreach($servers as $server){
-            if($server->isOnline()){
-                $component = new ServerItem($i, $this, $server);
-                $component->setSizeX($this->getSizeX()-2);
-                $this->items[$i-1] = $component;
-                $this->pager->addItem($this->items[$i-1]);
-                $i++;
-            }
+        foreach($servers as $player){
+            
         }
 
     }

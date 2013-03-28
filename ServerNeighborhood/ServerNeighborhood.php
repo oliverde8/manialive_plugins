@@ -164,16 +164,6 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
         }
     }
     
-    public function showServerList($login){
-        Gui\Windows\ServerList::Erase($login);
-        $w = Gui\Windows\ServerList::Create($login);
-        $w->setTitle('ServerNeighborhood - Server List');
-        $w->setSize(120, 105);
-        $w->setServers($this->servers);
-        $w->centerOnScreen();
-		$w->show();
-        
-    }
 
 }
 

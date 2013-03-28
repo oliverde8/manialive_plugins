@@ -12,8 +12,6 @@ class UndefStyle extends \ManiaLive\Gui\Control {
     
     
     
-    private $action;
-    
     private $bg;
     private $label_name;
     
@@ -34,15 +32,8 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->icon_status = new \ManiaLib\Gui\Elements\Quad($sizeY*0.6+0.6, $sizeY*0.6+0.6);
         $this->icon_status->setPosY(-.2);
         $this->icon_status->setPosX($this->getSizeX()-2);
-        if($server->getServer_data()->server->login == \ManiaLive\Data\Storage::getInstance()->serverLogin){
-            $this->icon_status->setStyle('Icons128x128_1');
-            $this->icon_status->setSubStyle('Back');
-            $this->addComponent($this->icon_status);
-        }else if($server->getServer_data()->server->private == 'true'){
-            $this->icon_status->setStyle('Icons128x128_1');
-            $this->icon_status->setSubStyle('Padlock');
-            $this->addComponent($this->icon_status);
-        }
+        $this->addComponent($this->icon_status);
+ 
         
         $this->icon_game = new \ManiaLib\Gui\Elements\Quad(3,3);
         $this->icon_game->setPosY(-0.4);
@@ -61,10 +52,6 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->label_nbPlayers->setPosY($this->icon_player->getPosY()-.5);
         $this->label_nbPlayers->setPosX($this->icon_player->getPosX()+2);
         $this->label_nbPlayers->setScale(.5);
-        if((int)$server->getServer_data()->server->players->current == (int)$server->getServer_data()->server->players->maximum)
-            $this->label_nbPlayers->setText ('$F00'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
-        else 
-            $this->label_nbPlayers->setText ('$FFF'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
         $this->addComponent($this->label_nbPlayers);
         
         $this->icon_specs = new \ManiaLib\Gui\Elements\Icons64x64_1(2.5,2.5);
@@ -77,10 +64,6 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->label_nbSpecs->setPosY($this->icon_specs->getPosY()-.5);
         $this->label_nbSpecs->setPosX($this->icon_specs->getPosX()+2);
         $this->label_nbSpecs->setScale(.5);
-        if((int)$server->getServer_data()->server->players->current == (int)$server->getServer_data()->server->players->maximum)
-            $this->label_nbSpecs->setText ('$F00'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
-        else
-            $this->label_nbSpecs->setText ('$FFF'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
         $this->addComponent($this->label_nbSpecs);
         
         $this->icon_ladder = new \ManiaLib\Gui\Elements\Icons64x64_1(2.5,2.5);
@@ -93,7 +76,6 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->label_ladder->setPosY($this->icon_ladder->getPosY()-.5);
         $this->label_ladder->setPosX($this->icon_ladder->getPosX()+2);
         $this->label_ladder->setScale(.5);
-        $this->label_ladder->setText('$FFF'.$server->getServer_data()->server->ladder->minimum.'/'.$server->getServer_data()->server->ladder->maximum);
         $this->addComponent($this->label_ladder);
         
         $this->label_name = new \ManiaLib\Gui\Elements\Label($sizeX/.6 - 12, $sizeY/2);
@@ -101,14 +83,43 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->label_name->setPosY(-1*.6);
         $this->label_name->setAlign('left', 'top');
         $this->label_name->setScale(0.6);
-        $this->label_name->setText('$AAA'.$server->getServer_data()->server->name);
         $this->addComponent($this->label_name);
         
         $this->sizeY = $sizeY*0.6+1;
-
+        $this->setData($server);
         $this->label_name->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
         
-        $this->action = $this->createAction(array($ctr, 'windowDetails'), $server);
+        //$this->action = $this->createAction(array($ctr, 'windowDetails'), $server);
+    }
+    
+    public function setData(Server $server){
+        if($server->getServer_data()->server->login == \ManiaLive\Data\Storage::getInstance()->serverLogin){
+            $this->icon_status->setStyle('Icons128x128_1');
+            $this->icon_status->setSubStyle('Back');
+            
+        }else if($server->getServer_data()->server->private == 'true'){
+            $this->icon_status->setStyle('Icons128x128_1');
+            $this->icon_status->setSubStyle('Padlock');
+        }else{
+            $this->icon_status->setStyle('empty');
+            $this->icon_status->setSubStyle('empty');
+        }
+        
+        $this->icon_game->setSubStyle(\ManiaLivePlugins\oliverde8\ServerNeighborhood\ServerNeighborhood::$gamemodes[(int)$server->getServer_data()->server->gamemode]['icon']);
+        
+        if((int)$server->getServer_data()->server->players->current == (int)$server->getServer_data()->server->players->maximum)
+            $this->label_nbPlayers->setText ('$F00'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
+        else 
+            $this->label_nbPlayers->setText ('$FFF'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
+        
+         if((int)$server->getServer_data()->server->players->current == (int)$server->getServer_data()->server->players->maximum)
+            $this->label_nbSpecs->setText ('$F00'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
+        else
+            $this->label_nbSpecs->setText ('$FFF'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
+        
+        $this->label_ladder->setText('$FFF'.$server->getServer_data()->server->ladder->minimum.'/'.$server->getServer_data()->server->ladder->maximum);
+        
+        $this->label_name->setText('$AAA'.$server->getServer_data()->server->name);
     }
     
     public function onResize($oldX, $oldY) {
