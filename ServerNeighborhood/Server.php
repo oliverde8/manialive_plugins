@@ -91,7 +91,7 @@ class Server {
             $xml .= '   </player>' . "\n";
         }
         foreach ($storage->spectators as $player) {
-            $nickname = $this->removespecials(validateUTF8String($player->nickName));
+            $nickname = $this->removespecials($player->nickName);
             $nickname = \ManiaLib\Utils\Formatting::stripCodes($nickname, 'l');
 
             $xml .= '   <player>' . "\n";
@@ -147,7 +147,8 @@ class Server {
     
     public function setServer_data($server_data) {
         $this->server_data = $server_data;
-        $this->server_isOnline = ($this->server_oldOnline < (int)$this->server_data->server->last_modified);
+        $this->server_isOnline = (($this->server_oldOnline < (int)$this->server_data->server->last_modified) 
+                || $this->server_data->server->last_modified + 3600 > time());
         $this->server_oldOnline = (int)$this->server_data->server->last_modified;
 
         $a = $this->server_data->server->packmask;

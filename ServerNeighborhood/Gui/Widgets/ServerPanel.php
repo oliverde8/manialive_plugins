@@ -152,9 +152,13 @@ class ServerPanel extends \ManiaLive\Gui\Window {
     
     
     public function windowDetails($login, $server){
-        \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\ServerList::Erase($login);
-        $w = \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\ServerList::Create($login);
-        //$w->setServers()
+        \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\PlayerList::Erase($login);
+        $w = \ManiaLivePlugins\oliverde8\ServerNeighborhood\Gui\Windows\PlayerList::Create($login);
+        $w->setTitle('ServerNeighborhood - Server Players');
+        $w->setSize(120, 105);
+        $w->setServer($server);
+        $w->centerOnScreen();
+		$w->show();
     }
     
     public function showList($login){

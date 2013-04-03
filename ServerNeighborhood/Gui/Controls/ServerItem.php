@@ -22,7 +22,6 @@ class ServerItem extends \ManiaLive\Gui\Control{
     private $label_nbPlayers, $label_nbSpecs, $label_ladder;
     
     //Server Map information
-    private $map_frame;
     private $icon_map, $icon_author, $icon_envi, $icon_atime, $icon_gtime, $icon_stime, $icon_btime;
     private $label_map, $label_author, $label_envi, $label_atime, $label_gtime, $label_stime, $label_btime;
     
@@ -44,8 +43,7 @@ class ServerItem extends \ManiaLive\Gui\Control{
         $sizeY = 14;
         $YSpace = 0.2;
         $bsize = $sizeY/2;
-      
-        
+          
         $this->bg_main = new \ManiaLib\Gui\Elements\Quad($this->getSizeX()-(3*$bsize)-1, $sizeY);
         $this->bg_main->setPosX(.5);
         $this->bg_main->setStyle(self::$bgStyle);
@@ -108,9 +106,11 @@ class ServerItem extends \ManiaLive\Gui\Control{
         $this->bg_fav->setManialink('maniaplanet://#addfavourite='.$server->getServer_data()->server->login);
         $this->icon_fav->setManialink('maniaplanet://#addfavourite='.$server->getServer_data()->server->login);
         
-        $action = $this->createAction(array($ctr, 'showServerPlayers'));
-        $this->bg_info->setAction($action, $server);
-        $this->icon_info->setAction($action, $server);
+        if($ctr != null){
+            $action = $this->createAction(array($ctr, 'showServerPlayers'));
+            $this->bg_info->setAction($action, $server);
+            $this->icon_info->setAction($action, $server);
+        }
     }
     
     public function onResize($oldX, $oldY) {
@@ -169,13 +169,13 @@ class ServerItem extends \ManiaLive\Gui\Control{
 
     public function destroy() {
         parent::destroy();
-        //$this->map_frame->destroy();
+        //$map_frame->destroy();
         //$this->icons_frame->destroy();
     }
     
     private function createMain(\ManiaLivePlugins\oliverde8\ServerNeighborhood\Server $server, $sizeY, $bsize){
         
-        $frame = new \ManiaLib\Gui\Elements\Frame();
+        $frame = new \ManiaLive\Gui\Controls\Frame();
         $frame->setPosY(-1);
         $iSize = $sizeY/3 - 1;
         
@@ -201,7 +201,7 @@ class ServerItem extends \ManiaLive\Gui\Control{
         $this->icon_player = new \ManiaLib\Gui\Elements\Icons64x64_1($iSize,$iSize);
         $this->icon_player->setPosX($bsize+2);
         $this->icon_player->setSubStyle(\ManiaLib\Gui\Elements\Icons64x64_1::Buddy);
-        $frame->add($this->icon_player);
+        $frame->addComponent($this->icon_player);
         
         $this->label_nbPlayers = new \ManiaLib\Gui\Elements\Label($iSize*2, $sizeY*0.6+0.6);
         $this->label_nbPlayers->setPosX($this->icon_player->getPosX()+$this->icon_player->getSizeX());
@@ -211,11 +211,11 @@ class ServerItem extends \ManiaLive\Gui\Control{
             $this->label_nbPlayers->setText ('$F00'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
         else 
             $this->label_nbPlayers->setText ('$FFF'.$server->getServer_data()->server->players->current.'/'.$server->getServer_data()->server->players->maximum);
-        $frame->add($this->label_nbPlayers);
+        $frame->addComponent($this->label_nbPlayers);
         
         $this->icon_specs = new \ManiaLib\Gui\Elements\Icons64x64_1($iSize,$iSize);
         $this->icon_specs->setSubStyle(\ManiaLib\Gui\Elements\Icons64x64_1::IconPlayers);
-        $frame->add($this->icon_specs);
+        $frame->addComponent($this->icon_specs);
         
         $this->label_nbSpecs = new \ManiaLib\Gui\Elements\Label($iSize*2, $sizeY*0.6+0.6);
         $this->label_nbSpecs->setScale(.8);
@@ -224,17 +224,17 @@ class ServerItem extends \ManiaLive\Gui\Control{
             $this->label_nbSpecs->setText ('$F00'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
         else
             $this->label_nbSpecs->setText ('$FFF'.$server->getServer_data()->server->spectators->current.'/'.$server->getServer_data()->server->spectators->maximum);
-        $frame->add($this->label_nbSpecs);
+        $frame->addComponent($this->label_nbSpecs);
         
         $this->icon_ladder = new \ManiaLib\Gui\Elements\Icons64x64_1($iSize,$iSize);
         $this->icon_ladder->setSubStyle(\ManiaLib\Gui\Elements\Icons64x64_1::ToolLeague1);
-        $frame->add($this->icon_ladder);
+        $frame->addComponent($this->icon_ladder);
         
         $this->label_ladder = new \ManiaLib\Gui\Elements\Label($iSize*2,$iSize);
         $this->label_ladder->setScale(.8);
         $this->label_ladder->setPosY($this->icon_ladder->getPosY()-.5);
         $this->label_ladder->setText('$FFF'.$server->getServer_data()->server->ladder->minimum.'/'.$server->getServer_data()->server->ladder->maximum);
-        $frame->add($this->label_ladder);
+        $frame->addComponent($this->label_ladder);
         
         $this->addComponent($frame);
         $this->icons_frame = $frame;
@@ -252,92 +252,93 @@ class ServerItem extends \ManiaLive\Gui\Control{
         
         $iSize = $sizeY/3 - 1;
         
-        $this->map_frame = new \ManiaLib\Gui\Elements\Frame();
-        $this->map_frame->setPosY(-$sizeY/3);
-        $this->map_frame->setPosX(2);
-        $this->addComponent($this->map_frame);
+        $map_frame = new \ManiaLive\Gui\Controls\Frame();
+        $map_frame->setPosY(-$sizeY/3);
+        $map_frame->setPosX(2);
         
         $this->icon_map = new \ManiaLib\Gui\Elements\Quad($iSize+1, $iSize+1);
         $this->icon_map->setStyle('Icons128x128_1');
         $this->icon_map->setSubStyle('NewTrack');
         $this->icon_map->setPosY(-$sizeY/6 + ($iSize)/2-1);
-        $this->map_frame->add($this->icon_map);
+        $map_frame->addComponent($this->icon_map);
         
         $this->label_map = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_map->setScale(.8);
         $this->label_map->setPosX($this->icon_map->getPosX()+$this->icon_map->getSizeX());
         $this->label_map->setPosY($this->icon_map->getPosY()-1);
         $this->label_map->setText('$FFF'.$server->getServer_data()->current->map->name);
-        $this->map_frame->add($this->label_map);
+        $map_frame->addComponent($this->label_map);
         
         $this->icon_author = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_author->setStyle('Icons128x128_1');
         $this->icon_author->setSubStyle('Solo');
-        $this->map_frame->add($this->icon_author);
+        $map_frame->addComponent($this->icon_author);
         
         $this->label_author = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_author->setScale(.7);
         $this->label_author->setPosY($this->icon_author->getPosY()-.5);
         $this->label_author->setText('$FFF'.$server->getServer_data()->current->map->author);
-        $this->map_frame->add($this->label_author);
+        $map_frame->addComponent($this->label_author);
         
         $this->icon_envi = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_envi->setStyle('Icons128x128_1');
         $this->icon_envi->setSubStyle('Nations');
-        $this->map_frame->add($this->icon_envi);
+        $map_frame->addComponent($this->icon_envi);
         
         $this->label_envi = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_envi->setScale(.7);
         $this->label_envi->setPosY($this->icon_author->getPosY()-.5);
         $this->label_envi->setText('$FFF'.$server->getServer_data()->current->map->environment);
-        $this->map_frame->add($this->label_envi);
+        $map_frame->addComponent($this->label_envi);
         
         $this->icon_atime = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_atime->setStyle('MedalsBig');
         $this->icon_atime->setSubStyle('MedalAuthor');
-        $this->map_frame->add($this->icon_atime);
+        $map_frame->addComponent($this->icon_atime);
         
         $this->label_atime = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_atime->setScale(.7);
         $this->label_atime->setPosY($this->icon_author->getPosY()-.5);
         $this->label_atime->setText('$FFF'.$server->getServer_data()->current->map->authortime);
-        $this->map_frame->add($this->label_atime);
+        $map_frame->addComponent($this->label_atime);
         
         $this->icon_gtime = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_gtime->setStyle('MedalsBig');
         $this->icon_gtime->setSubStyle('MedalGold');
         $this->icon_gtime->setPosY(-$sizeY/3);
-        $this->map_frame->add($this->icon_gtime);
+        $map_frame->addComponent($this->icon_gtime);
         
         $this->label_gtime = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_gtime->setScale(.7);
         $this->label_gtime->setPosY($this->icon_gtime->getPosY()-.5);
         $this->label_gtime->setText('$FFF'.$server->getServer_data()->current->map->goldtime);
-        $this->map_frame->add($this->label_gtime);
+        $map_frame->addComponent($this->label_gtime);
         
         $this->icon_stime = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_stime->setStyle('MedalsBig');
         $this->icon_stime->setSubStyle('MedalSilver');
         $this->icon_stime->setPosY(-$sizeY/3);
-        $this->map_frame->add($this->icon_stime);
+        $map_frame->addComponent($this->icon_stime);
         
         $this->label_stime = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_stime->setScale(.7);
         $this->label_stime->setPosY($this->icon_stime->getPosY()-.5);
         $this->label_stime->setText('$FFF'.$server->getServer_data()->current->map->silvertime);
-        $this->map_frame->add($this->label_stime);
+        $map_frame->addComponent($this->label_stime);
      
         $this->icon_btime = new \ManiaLib\Gui\Elements\Quad($iSize, $iSize);
         $this->icon_btime->setStyle('MedalsBig');
         $this->icon_btime->setSubStyle('MedalBronze');
         $this->icon_btime->setPosY(-$sizeY/3);
-        $this->map_frame->add($this->icon_btime);
+        $map_frame->addComponent($this->icon_btime);
         
         $this->label_btime = new \ManiaLib\Gui\Elements\Label(20,$iSize);
         $this->label_btime->setScale(.7);
         $this->label_btime->setPosY($this->icon_btime->getPosY()-.5);
         $this->label_btime->setText('$FFF'.$server->getServer_data()->current->map->bronzetime);
-        $this->map_frame->add($this->label_btime);
+        $map_frame->addComponent($this->label_btime);
+        
+        $this->addComponent($map_frame);
     }
 }
 
