@@ -5,10 +5,11 @@
  * @name Oliverde8 Server Switch
  * @date 23-03-2013
  * @version 1.0
- * @website ...
+ * @website oliver-decramer.com
  * @package oliverd8
  *
  * @author Oliver "oliverde8" De Cramer <oliverde8@gmail.com>
+ * @Idea undef.de
  * @copyright 2013
  *
  * ---------------------------------------------------------------------
