@@ -97,11 +97,11 @@ class ServerItem extends \ManiaLive\Gui\Control{
         
         $this->setSize($this->getSizeX(), $sizeY+$YSpace);
         
-        $this->bg_jplayer->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
-        $this->icon_jplayer->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
+        $this->bg_jplayer->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->title);
+        $this->icon_jplayer->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->title);
         
-        $this->bg_jspec->setManialink('maniaplanet://#spectate='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
-        $this->icon_jspec->setManialink('maniaplanet://#spectate='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
+        $this->bg_jspec->setManialink('maniaplanet://#spectate='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->title);
+        $this->icon_jspec->setManialink('maniaplanet://#spectate='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->title);
         
         $this->bg_fav->setManialink('maniaplanet://#addfavourite='.$server->getServer_data()->server->login);
         $this->icon_fav->setManialink('maniaplanet://#addfavourite='.$server->getServer_data()->server->login);

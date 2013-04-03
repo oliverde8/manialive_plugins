@@ -51,6 +51,7 @@ class Server {
         $xml .= '  <private>' . ($storage->server->password == "" ? 'false' : 'true') . '</private>' . "\n";
         $xml .= '  <game>MP</game>' . "\n";
         $xml .= '  <gamemode>' . $storage->gameInfos->gameMode . '</gamemode>' . "\n";
+        $xml .= '  <title>'.$this->server_titleId.'</title>' . "\n";
         $xml .= '  <packmask>'.$this->server_titleId.'</packmask>' . "\n";
         $xml .= '  <players>' . "\n";
         $xml .= '   <current>' . sizeof($storage->players) . '</current>' . "\n";
@@ -150,14 +151,16 @@ class Server {
         $this->server_isOnline = (($this->server_oldOnline < (int)$this->server_data->server->last_modified) 
                 || $this->server_data->server->last_modified + 3600 > time());
         $this->server_oldOnline = (int)$this->server_data->server->last_modified;
-
-        $a = $this->server_data->server->packmask;
-        if (strpos($a,'TM') === false && strpos($a,'SM') === false && strpos($a,'QM') === false) {
-            $a = strtolower($a);
-            $a[0] = strtoupper($a[0]);
-            $this->server_data->server->packmask = 'TM'.$a;
+        
+        if(isset($this->server_data->server->packmask) && !isset($this->server_data->server->title)){
+            $this->server_data->server->title = $this->server_data->server->packmask;
+            $a = $this->server_data->server->packmask;
+            if (strpos($a,'TM') === false && strpos($a,'SM') === false && strpos($a,'QM') === false) {
+                $a = strtolower($a);
+                $a[0] = strtoupper($a[0]);
+                $this->server_data->server->title = 'TM'.$a;
+            }
         }
-
     }
     
     public function getServer_data() {
