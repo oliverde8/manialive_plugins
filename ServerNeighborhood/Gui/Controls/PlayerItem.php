@@ -101,6 +101,10 @@ class PlayerItem extends \ManiaLive\Gui\Control{
         
         $this->icon_spec->setPosX($posX + $sizeX/2 - $this->icon_spec->getSizeX()/2);
     }
+    
+    public function destroy() {
+        parent::destroy();
+    }
 }
 
 ?>

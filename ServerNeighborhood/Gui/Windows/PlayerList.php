@@ -68,6 +68,7 @@ class PlayerList extends \ManiaLive\Gui\ManagedWindow{
         }        
         $this->items = null;
         $this->pager->destroy();
+        $this->serverItem->destroy();
         parent::destroy();
     }
     

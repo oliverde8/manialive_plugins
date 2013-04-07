@@ -8,9 +8,7 @@ use ManiaLivePlugins\oliverde8\ServerNeighborhood\Server;
  *
  * @author oliverde8
  */
-class UndefStyle extends \ManiaLive\Gui\Control {
-    
-    
+class UndefStyle extends AbsControl {
     
     private $bg;
     private $label_name;
@@ -85,18 +83,13 @@ class UndefStyle extends \ManiaLive\Gui\Control {
         $this->addComponent($this->label_name);
         
         $this->sizeY = $sizeY*0.6+1;
-        $this->setData($server);
+        parent::__construct($server);
         
-        $action = $this->createAction(array($ctr, 'windowDetails'), $server);
+        $action = $this->createAction(array($this, 'showServerPlayers'));
         $this->bg->setAction($action);
-        
-        //$this->bg->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
-        //$this->label_name->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
-        
-        //$this->action = $this->createAction(array($ctr, 'windowDetails'), $server);
     }
     
-    public function setData(Server $server){
+    public function onSetData(Server $server) {
         if($server->getServer_data()->server->login == \ManiaLive\Data\Storage::getInstance()->serverLogin){
             $this->icon_status->setStyle('Icons128x128_1');
             $this->icon_status->setSubStyle('Back');

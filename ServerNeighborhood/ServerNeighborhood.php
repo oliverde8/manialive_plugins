@@ -97,8 +97,11 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
         if ((time() - $this->lastSent) > $this->xml->refresh_interval) {
             $this->lastSent = time();
             $this->saveData($this->server->createXML($this->connection, $this->storage));
-            $this->getData();
-            $this->showWidget($this->servers);
+            
+            if(sizeof($this->storage->players) > 0 || sizeof($this->storage->spectators) > 0){
+                $this->getData();
+                $this->showWidget($this->servers);
+            }
         }
     }
 

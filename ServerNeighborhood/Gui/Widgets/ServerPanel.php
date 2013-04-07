@@ -171,6 +171,15 @@ class ServerPanel extends \ManiaLive\Gui\Window {
 		$w->show();
     }
     
+    public function destroy() {
+        parent::destroy();
+        foreach ($this->items as $item){
+            $item->destroy();
+        }
+        $this->items = array();
+        $this->frame->destroy();
+    }
+    
 }
 
 ?>

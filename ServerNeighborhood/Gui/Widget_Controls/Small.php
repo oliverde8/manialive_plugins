@@ -8,7 +8,7 @@ use ManiaLivePlugins\oliverde8\ServerNeighborhood\Server;
  *
  * @author oliverde8
  */
-class Small extends \ManiaLive\Gui\Control {
+class Small extends AbsControl {
     
     private $bg;
     private $label_name;
@@ -21,7 +21,6 @@ class Small extends \ManiaLive\Gui\Control {
         $this->bg->setPosX(0);
         $this->bg->setSubStyle(\ManiaLib\Gui\Elements\BgsPlayerCard::BgCardSystem);
         $this->bg->setAlign('left', 'top');
-        $this->bg->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
         $this->addComponent($this->bg);
         
         $this->label_name = new \ManiaLib\Gui\Elements\Label($sizeX-6, $sizeY);
@@ -33,14 +32,21 @@ class Small extends \ManiaLive\Gui\Control {
         $this->addComponent($this->label_name);
         
         $this->sizeY = $sizeY*0.6+1;
-
-        $this->label_name->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
+        
+        $action = $this->createAction(array($this, 'showServerPlayers'));
+        $this->bg->setAction($action);
+        $this->label_name->setAction($action);
+        //$this->label_name->setManialink('maniaplanet://#join='.$server->getServer_data()->server->login.'@'.$server->getServer_data()->server->packmask);
     }
     
     public function onResize($oldX, $oldY) {
         parent::onResize($oldX, $oldY);
         $this->bg->setSizeX($this->getSizeX());
         $this->label_name->setSizeX($this->getSizeX()/.6 - 2);
+    }
+
+    public function onSetData(Server $server) {
+        $this->label_name->setText('$AAA'.$server->getServer_data()->server->name);
     }
     
 }

@@ -22,6 +22,8 @@ class ServerItem extends \ManiaLive\Gui\Control{
     private $label_nbPlayers, $label_nbSpecs, $label_ladder;
     
     //Server Map information
+    private $info_frame;
+    private $map_frame;
     private $icon_map, $icon_author, $icon_envi, $icon_atime, $icon_gtime, $icon_stime, $icon_btime;
     private $label_map, $label_author, $label_envi, $label_atime, $label_gtime, $label_stime, $label_btime;
     
@@ -107,7 +109,7 @@ class ServerItem extends \ManiaLive\Gui\Control{
         $this->icon_fav->setManialink('maniaplanet://#addfavourite='.$server->getServer_data()->server->login);
         
         if($ctr != null){
-            $action = $this->createAction(array($ctr, 'showServerPlayers'));
+            $action = $this->createAction(array($ctr, 'showServerPlayers'), $server);
             $this->bg_info->setAction($action, $server);
             $this->icon_info->setAction($action, $server);
         }
@@ -165,18 +167,12 @@ class ServerItem extends \ManiaLive\Gui\Control{
         
         parent::onResize($oldX, $oldY);
     }
-
-
-    public function destroy() {
-        parent::destroy();
-        //$map_frame->destroy();
-        //$this->icons_frame->destroy();
-    }
     
     private function createMain(\ManiaLivePlugins\oliverde8\ServerNeighborhood\Server $server, $sizeY, $bsize){
         
         $frame = new \ManiaLive\Gui\Controls\Frame();
         $frame->setPosY(-1);
+        $this->info_frame = $frame;
         $iSize = $sizeY/3 - 1;
         
         
@@ -338,7 +334,15 @@ class ServerItem extends \ManiaLive\Gui\Control{
         $this->label_btime->setText('$FFF'.$server->getServer_data()->current->map->bronzetime);
         $map_frame->addComponent($this->label_btime);
         
+        $this->map_frame = $map_frame;
         $this->addComponent($map_frame);
+    }
+    
+    public function destroy() {
+        parent::destroy();
+        $this->info_frame->destroy();
+        $this->map_frame->destroy();
+        $this->info_frame->destroy();
     }
 }
 
