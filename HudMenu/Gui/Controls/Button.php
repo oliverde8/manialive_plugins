@@ -97,6 +97,11 @@ class Button extends \ManiaLive\Gui\Control implements \Iterator {
 	}
 	
 	public function destroy() {
+        
+	}
+    
+    public function myDestroy(){
+        echo "Destroh\n\n";
 		if($this->isSubDir && \is_array($this->subButtons)){
 			foreach($this->subButtons as $id => $button){
 				$button->destroy();
@@ -106,7 +111,6 @@ class Button extends \ManiaLive\Gui\Control implements \Iterator {
         $this->plugin = null;
         $this->action = null;
 		$this->clearComponents();
-		ActionHandler::getInstance()->deleteAction($this->ml_action);
         $this->ml_action = null;
         $this->switch = null;
         $this->permission = null;
@@ -117,7 +121,7 @@ class Button extends \ManiaLive\Gui\Control implements \Iterator {
 		unset($this->background);
 		unset($this->label);
 		parent::destroy();
-	}
+    }
 	
 	public function checkPlugin($pluginId){
 		$deleted = false;
@@ -186,7 +190,6 @@ class Button extends \ManiaLive\Gui\Control implements \Iterator {
 					break;
 			}
 		}
-
 		if(isset(RootMenu::$open[$login])
 				&& isset(RootMenu::$open[$login][$this->level])
 				&& RootMenu::$open[$login][$this->level] == $this->id
@@ -197,8 +200,7 @@ class Button extends \ManiaLive\Gui\Control implements \Iterator {
 		
 	}
     
-	protected function afterDraw() {
-		parent::afterDraw();
+	public function afterDraw() {
 		if (isset($this->icon) && $this->icon != NULL) {
 			$this->icon->setSize(self::$style->icon_sizeX, self::$style->icon_sizeX);
 			$this->icon->setPosition(self::$style->icon_posX, self::$style->icon_posY);

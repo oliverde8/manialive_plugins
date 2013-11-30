@@ -39,8 +39,7 @@ class RootMenu extends Window {
         $posY=0;
 		$forLater = null;
 		$forLaterY = 0;
-
-
+        
         foreach ($this->roots as $root){
             if($root->needToShow() && $root->hasRights($this->getRecipient())){
 
@@ -48,10 +47,11 @@ class RootMenu extends Window {
 					&& isset(self::$open[$this->getRecipient()])
 					&& isset(self::$open[$this->getRecipient()][$this->level+1])
 					&& self::$open[$this->getRecipient()][$this->level+1] == $root->getId()){
-
 					$forLater = $root;
 					$forLaterY = $posY;
 				}else{
+                    
+
                     $root->beforeDraw($this->getRecipient());
 					$this->addComponent($root);
 					$root->setPositionY($posY);
@@ -65,10 +65,17 @@ class RootMenu extends Window {
         }
 
 		if($forLater != null){
+            $forLater->beforeDraw($this->getRecipient());
 			$this->addComponent($forLater);
 			$forLater->setPositionY($forLaterY);
 			$forLater->setPositionZ(-1);
 		}
+    }
+    
+    public function afterDraw(){
+        foreach ($this->roots as $root){
+            $root->afterDraw();
+        }
     }
 
 
@@ -107,30 +114,34 @@ class RootMenu extends Window {
 			//If this is the window handling this level then gogo
 
 			if(isset(self::$open[$this->getRecipient()][$button->getLevel()]) && self::$open[$this->getRecipient()][$button->getLevel()] == $button->getId()){
+                
 				//We need to close the Sub Level
-
 				unset(self::$open[$this->getRecipient()][$button->getLevel()]);
 				if(isset($this->sub) && !empty($this->sub)){
 					//Closing the Sub Window and destroying it
 					$this->sub->hide();
 					$this->sub->closeSubs();
 					$this->sub->destroy();
-					if(self::$settings->bigIcons)
+					if(self::$settings->bigIcons){
 						$this->show();
+                        $this->afterDraw();
+                    }
 				}
 				unset($this->sub);
 			}else{
 				//We need to open a new sub Level
-
 				if(isset(self::$open[$this->getRecipient()][$button->getLevel()]) && isset($this->sub)){
 					//There is aalready one open closing it
 					$this->sub->setRoots($button->getSubButtons());
 					$this->sub->setPosY($button->getPosY()+$this->getPosY());
 					$this->sub->show();
+                    $this->sub->afterDraw();
 					$this->sub->closeSubs();
 
-					if(self::$settings->bigIcons)
+					if(self::$settings->bigIcons){
 						$this->show();
+                        $this->afterDraw();
+                    }
 				}else{
 					//Opening nex sub Menu
 					$this->sub = RootMenu::Create($this->getRecipient(),false);
@@ -146,8 +157,11 @@ class RootMenu extends Window {
 					$posY = $button->getPosY();
 					$this->sub->setPosition($posX, $posY+$this->getPosY());
 					$this->sub->show();
-					if(self::$settings->bigIcons)
+                    $this->sub->afterDraw();
+					if(self::$settings->bigIcons){
 						$this->show();
+                        $this->afterDraw();
+                    }
 				}
 				self::$open[$this->getRecipient()][$button->getLevel()] = $button->getId();
 			}
@@ -206,7 +220,6 @@ class RootMenu extends Window {
         $this->sub = null;
         $this->parent = null;
         $this->level = null;
-        $this->clearComponents();
     }
 
     static function onPlayerDisconnect($login){

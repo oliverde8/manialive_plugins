@@ -32,15 +32,16 @@
 			<MarginY>-0.5</MarginY>		
 		</BackGround>
 		<Icon>
-			<BigIcons>true</BigIcons> <!-- Will use as luch as 2 time more ressource to open a menu -->
+            <!-- Big icons will make menu rendering harder. -->
+			<BigIcons>true</BigIcons> 
 			<SizeX>4.5</SizeX>
 			<SizeY>4.5</SizeY>
 			<posX>0</posX>
 			<posY>0</posY>
 			<SizeBigX>6</SizeBigX>
-			<SizeBigY>6</SizeBigY>
+			<SizeBigY>12</SizeBigY>
 			<posBigX>-0.4</posBigX>
-			<posBigY>-0.45</posBigY>
+			<posBigY>10</posBigY>
 		</Icon>
 		<separator>
 			<Style>Bgs1InRace</Style>

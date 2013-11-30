@@ -4,7 +4,7 @@
  *
  * @name Oliverde8 HudMenu
  * @date 23-03-2013
- * @version 1.41
+ * @version 1.42
  * @website http://forum.maniaplanet.com/viewtopic.php?f=47&t=552
  * @package oliverd87
  *
@@ -43,7 +43,6 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
 
     private static $buttons;
     private static $roots;
-    public static $actions;
     private $bid;
     private $style;
     private $playerData = array();
@@ -51,6 +50,8 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
     private $showTo = array();
     private $gameVersion;
     private $eventSent;
+    
+    private $loadedList = array();
 
     public function onInit() {
         $this->eventSent = false;
@@ -58,7 +59,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         $this->setPublicMethod("addButton");
         $this->setPublicMethod("addRootMenu");
 
-        $this->setVersion("1.41");
+        $this->setVersion("1.42");
     }
 
     public function onReady() {
@@ -89,9 +90,10 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         //Checking if the AdminGroups plugin is there
         if ($this->isPluginLoaded("MLEPP\Core"))
             Button::$AdminGroups = \ManiaLivePlugins\MLEPP\Core\AdminGroups::getInstance();
-        else if ($this->isPluginLoaded("eXpansion\AdminGroups"))
+        else if ($this->isPluginLoaded("eXpansion\AdminGroups")){
             Button::$AdminGroups = \ManiaLivePlugins\eXpansion\AdminGroups\AdminGroups::getInstance();
-        else
+            Dispatcher::register(\ManiaLivePlugins\eXpansion\AdminGroups\Events\Event::getClass(), $this);
+        }else
             Button::$AdminGroups = null;
 
         //Creating the Menu for the players already in the game
@@ -141,19 +143,12 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             $this->showTo[$login] = true;
         } else if (isset($this->playerData[$login])) {
             //If that player has already a Menu we will update;
-            $this->playerData[$login]->show();
+            $this->playerData[$login]->closeSubs();
+            $this->playerData[$login]->forceRefresh();
         } else {
             //We create a Menu for the player
             $menu = RootMenu::Create($login, false);
             $root = array();
-
-            //For Clone each Button in the Root. Thay will automatically clone the sub Buttons
-            /* foreach(self::$roots as $button ){
-              $new = new Button($this->style->BackGround->SizeX, $this->style->BackGround->SizeY);
-              $new->createMe($button);
-              //Adding the cloned button to the root
-              $root[] = $new;
-              } */
 
             //Setting the root of the Menu
             $menu->setRoots(self::$roots);
@@ -179,6 +174,8 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             $this->createMenu($login);
         else
             $this->showTo[$login] = true;
+        
+        $this->memory();
     }
 
     /**
@@ -186,7 +183,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
      *
      * @param <type> $login
      */
-    public function onPlayerDisconnect($login) {
+    public function onPlayerDisconnect($login, $reason="") {
         if (isset($this->showTo[$login])) {
             unset($this->showTo[$login]);
         }
@@ -198,18 +195,33 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         RootMenu::onPlayerDisconnect($login);
         RootMenu::Erase($login);
     }
-
+    
+    public function exp_admin_added($login){
+        $this->createMenu($login);
+    }
+    
+    public function exp_admin_removed($login){
+        $this->createMenu($login);
+    }
+            
     function memory() {
         print "Memory Usage: " . memory_get_usage() / 1024 . "Mb\n";
     }
 
     public function onPluginLoaded($pluginId) {
-        if ($this->eventSent) {
+        if ($this->eventSent && isset($this->loadedList[$pluginId])) {
             foreach ($this->storage->players as $login => $player) {
                 $this->onPlayerDisconnect($login);
             }
             foreach ($this->storage->spectators as $login => $player) {
                 $this->onPlayerDisconnect($login);
+            }
+            $this->bid = 0;
+            foreach (self::$buttons as $button){
+                $button->myDestroy();
+            }
+             foreach (self::$roots as $button){
+                $button->myDestroy();
             }
             self::$buttons = array();
             self::$roots = array();
@@ -225,6 +237,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             foreach ($this->storage->spectators as $login => $player) {
                 $this->onPlayerDisconnect($login);
             }
+            $this->bid = 0;
             self::$buttons = array();
             self::$roots = array();
             $this->onReady();

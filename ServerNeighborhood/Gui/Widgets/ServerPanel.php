@@ -28,6 +28,8 @@ class ServerPanel extends \ManiaLive\Gui\Window {
     private $label_title;
     private $icon_title;
     
+    private $label_secCounter;
+    
     private $bg_more;
     private $icon_all;
     private $label_all;
@@ -74,6 +76,15 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $this->label_all->setText('$FFFShow All');
         $this->addComponent($this->label_all);
         
+        $this->label_secCounter = new \ManiaLib\Gui\Elements\Label(5,4);
+        $this->label_secCounter->setId('ode8_sn_SecCounter');
+        $this->label_secCounter->setAlign("left", "top");
+        $this->label_secCounter->setPosY($this->icon_all->getPosY()-1);
+        $this->label_secCounter->setPosX(5);
+        $this->label_secCounter->setScale(0.6);
+        $this->label_secCounter->setText('$FFF10');
+        $this->addComponent($this->label_secCounter);
+        
         $action = $this->createAction(array($this, 'showList'));
         $this->label_all->setAction($action);
         $this->icon_all->setAction($action);
@@ -89,6 +100,32 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         $this->frame->setPosition(2, -(4*0.8)-5);
         $this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
         $this->addComponent($this->frame);
+       
+        $this->xml = new \ManiaLive\Gui\Elements\Xml();
+        $this->xml->setContent('
+            <timeout>0</timeout>            
+        <script><!--
+
+main () {
+log("ok!");
+    declare Integer time = 10;
+
+    while(True) {         
+        declare CMlLabel seconds <=> (Page.GetFirstChild("ode8_sn_SecCounter") as CMlLabel);
+        
+        if(time < 0)
+            seconds.Value = "-";
+        else
+            seconds.Value = "$FFF" ^ time;
+
+        sleep(1000);
+        
+        time = time-1;
+    }
+}
+        --></script>');
+        $this->addComponent($this->xml);
+        
     }
 
     public function update($servers) {
@@ -178,6 +215,11 @@ class ServerPanel extends \ManiaLive\Gui\Window {
         }
         $this->items = array();
         $this->frame->destroy();
+    }
+    
+    public function getSCript(){
+        
+        
     }
     
 }
