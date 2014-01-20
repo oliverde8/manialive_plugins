@@ -17,6 +17,7 @@ class RootMenu extends Window {
      * @var Array of open Menus
      */
     public static $open = array();
+    public static $openH = array();
     private $actual;
 
     private $sub;
@@ -108,14 +109,18 @@ class RootMenu extends Window {
 		//If the list of open menus isn't created;
 		if(!isset(self::$open[$this->getRecipient()])){
 			self::$open[$this->getRecipient()] = array();
+			self::$openH[$this->getRecipient()] = array();
 		}
 
 		if($this->level == ($button->getLevel()-1)){
 			//If this is the window handling this level then gogo
 
-			if(isset(self::$open[$this->getRecipient()][$button->getLevel()]) && self::$open[$this->getRecipient()][$button->getLevel()] == $button->getId()){
-                
+			if(isset(self::$open[$this->getRecipient()][$button->getLevel()]) 
+                    && self::$open[$this->getRecipient()][$button->getLevel()] == $button->getId()){
+              
 				//We need to close the Sub Level
+                self::$openH[$this->getRecipient()] = self::$open[$this->getRecipient()];
+                
 				unset(self::$open[$this->getRecipient()][$button->getLevel()]);
 				if(isset($this->sub) && !empty($this->sub)){
 					//Closing the Sub Window and destroying it
@@ -164,6 +169,18 @@ class RootMenu extends Window {
                     }
 				}
 				self::$open[$this->getRecipient()][$button->getLevel()] = $button->getId();
+                
+                //Checking for History opening, 
+                if(isset(self::$openH[$this->getRecipient()][$button->getLevel()]) 
+                        && self::$openH[$this->getRecipient()][$button->getLevel()] == $button->getId()
+                        && isset(self::$openH[$this->getRecipient()][$button->getLevel()+1])){
+                    
+                    foreach($button->getSubButtons() as $b){
+                        if(self::$openH[$this->getRecipient()][$button->getLevel()+1] == $b->getId()){
+                           $this->sub->onClick($b);                             
+                        }                    
+                    }
+                }
 			}
 		}elseif($this->level < ($button->getLevel()-1)){
 			//Pass the action to the sub level to handle it
@@ -224,6 +241,7 @@ class RootMenu extends Window {
 
     static function onPlayerDisconnect($login){
 		unset(self::$open[$login]);
+		unset(self::$openH[$login]);
 	}
 }
 
