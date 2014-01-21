@@ -22,6 +22,7 @@ class RootMenu extends Window {
 
     private $sub;
     public $parent = null;
+    public $elementsYPos = array();
 
     private $level;
     private $buttonId;
@@ -56,6 +57,7 @@ class RootMenu extends Window {
                     $root->beforeDraw($this->getRecipient());
 					$this->addComponent($root);
 					$root->setPositionY($posY);
+                    $this->elementsYPos[$root->getId()] = $posY;
 					$root->setPositionZ(-1);
 				}
 				if(self::$settings->VerticalDirection == 0)
@@ -138,7 +140,11 @@ class RootMenu extends Window {
 				if(isset(self::$open[$this->getRecipient()][$button->getLevel()]) && isset($this->sub)){
 					//There is aalready one open closing it
 					$this->sub->setRoots($button->getSubButtons());
-					$this->sub->setPosY($button->getPosY()+$this->getPosY());
+                    
+                    if(isset($this->elementsYPos[$button->getId()]))
+                        $this->sub->setPosY($this->elementsYPos[$button->getId()]+$this->getPosY());
+                    else
+                        $this->sub->setPosY($this->getPosY());
 					$this->sub->show();
                     $this->sub->afterDraw();
 					$this->sub->closeSubs();
@@ -160,8 +166,14 @@ class RootMenu extends Window {
 						$posX = $this->getPosX()+ $button->getSizeX() - self::$settings->marginX;
 
 					$posY = $button->getPosY();
-					$this->sub->setPosition($posX, $posY+$this->getPosY());
-					$this->sub->show();
+                    
+                    if(isset($this->elementsYPos[$button->getId()]) 
+                            && self::$settings->openAtLevel)
+                        $this->sub->setPosition($posX,$this->elementsYPos[$button->getId()]+$this->getPosY());
+                    else
+                        $this->sub->setPosition($posX,$this->getPosY());
+					
+                    $this->sub->show();
                     $this->sub->afterDraw();
 					if(self::$settings->bigIcons){
 						$this->show();
@@ -173,7 +185,8 @@ class RootMenu extends Window {
                 //Checking for History opening, 
                 if(isset(self::$openH[$this->getRecipient()][$button->getLevel()]) 
                         && self::$openH[$this->getRecipient()][$button->getLevel()] == $button->getId()
-                        && isset(self::$openH[$this->getRecipient()][$button->getLevel()+1])){
+                        && isset(self::$openH[$this->getRecipient()][$button->getLevel()+1])
+                        && self::$settings->remeberOpenMenus){
                     
                     foreach($button->getSubButtons() as $b){
                         if(self::$openH[$this->getRecipient()][$button->getLevel()+1] == $b->getId()){

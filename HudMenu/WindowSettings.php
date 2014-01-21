@@ -20,5 +20,7 @@ class WindowSettings {
 	public $HorizentalDirection;
 
 	public $closeOnClick;
+	public $remeberOpenMenus;
+	public $openAtLevel;
 }
 ?>

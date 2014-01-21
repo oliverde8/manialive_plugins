@@ -268,6 +268,8 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         $winSettings->VerticalDirection = (int) $this->style->VerticalDirection;
         $winSettings->HorizentalDirection = (int) $this->style->HorizentalDirection;
         $winSettings->closeOnClick = $this->stringToBool($this->style->closeOnClick);
+        $winSettings->remeberOpenMenus = $this->stringToBool($this->style->remeberOpenMenus);
+        $winSettings->openAtLevel = $this->stringToBool($this->style->openAtLevel);
         RootMenu::setSettings($winSettings);
 
         //Settings that are specific to buttons 
