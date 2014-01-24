@@ -88,9 +88,9 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         }
 
         //Checking if the AdminGroups plugin is there
-        if ($this->isPluginLoaded("MLEPP\Core"))
+        if ($this->isPluginLoadedMine("MLEPP\Core"))
             Button::$AdminGroups = \ManiaLivePlugins\MLEPP\Core\AdminGroups::getInstance();
-        else if ($this->isPluginLoaded("eXpansion\AdminGroups")){
+        else if ($this->isPluginLoadedMine("ManiaLivePlugins\eXpansion\AdminGroups\AdminGroups")){
             Button::$AdminGroups = \ManiaLivePlugins\eXpansion\AdminGroups\AdminGroups::getInstance();
             Dispatcher::register(\ManiaLivePlugins\eXpansion\AdminGroups\Events\Event::getClass(), $this);
         }else
@@ -372,8 +372,9 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             self::$buttons[$this->bid]->setButton($this->bid, $level, $xml["caption"], $this);
 
             self::$buttons[$this->bid]->setLink($xml["Link"]);
-            if (isset($xml["plugin"]) && !$this->isPluginLoaded((string) $xml["plugin"])) {
-                $added = false;
+            if (isset($xml["plugin"]) && !$this->isPluginLoadedMine((string) $xml["plugin"])) {	
+				$pname = 
+				$added = false;
             }
         } elseif (isset($xml["ManiaLink"])) {
             //If there is a link to a ManiaLink
@@ -381,7 +382,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             self::$buttons[$this->bid]->setButton($this->bid, $level, $xml["caption"], $this);
 
             self::$buttons[$this->bid]->setManiaLink($xml["ManiaLink"]);
-            if (isset($xml["plugin"]) && !$this->isPluginLoaded((string) $xml["plugin"])) {
+            if (isset($xml["plugin"]) && !$this->isPluginLoadedMine((string) $xml["plugin"])) {
                 $added = false;
             }
         } elseif (isset($xml["seperator"])) {
@@ -389,7 +390,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
 
             self::$buttons[$this->bid] = new Button($this->style->BackGround->SizeX, $this->style->BackGround->SizeY);
             self::$buttons[$this->bid]->setButton($this->bid, $level, $xml["caption"], $this, true);
-            if (isset($xml["plugin"]) && !$this->isPluginLoaded((string) $xml["plugin"])) {
+            if (isset($xml["plugin"]) && !$this->isPluginLoadedMine((string) $xml["plugin"])) {
                 $added = false;
             }
         } elseif (isset($xml["chat"])) {
@@ -397,7 +398,7 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             self::$buttons[$this->bid]->setButton($this->bid, $level, $xml["caption"], $this);
 
             self::$buttons[$this->bid]->setFunctionCall($this, 'interpreterTunnel', array((string) $xml["chat"]));
-            if (isset($xml["plugin"]) && !$this->isPluginLoaded((string) $xml["plugin"])) {
+            if (isset($xml["plugin"]) && !$this->isPluginLoadedMine((string) $xml["plugin"])) {
                 $added = false;
             }
         } elseif (isset($xml["plugin"]) && isset($xml["function"])) {
@@ -491,6 +492,32 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         return $added;
     }
 
+	public function isPluginLoadedMine($pluginName){ 
+		if(!$this->isPluginLoaded($pluginName)){
+			$exploded = explode("\\", $pluginName);
+			$newName = "ManiaLivePlugins\\".$pluginName."\\".$exploded[sizeof($exploded)-1];
+			
+			if($this->isPluginLoaded($newName))			
+				echo $pluginName . "FALSE TRUE \n";
+			else 
+				echo $pluginName . "FALSE FALSE \n";
+			
+			return $this->isPluginLoaded($newName);
+		}
+		echo $pluginName . "TRUE \n";
+		return true;
+	}
+	
+	public function getPluginNameFromOld($pluginName){
+		if(!$this->isPluginLoaded($pluginName)){
+			$exploded = explode("\\", $pluginName);
+			$newName = "ManiaLivePlugins\\".$pluginName."\\".$exploded[sizeof($exploded)-1];
+			return $newName;
+		}else{
+			return $pluginName;
+		}
+	}
+	
     /**
      * Check if a function of the gicen plugin can be called bt the Menu
      *
@@ -509,10 +536,12 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
             return true;
         }
 
-        if ($this->isPluginLoaded($plugin2)) {
+        if ($this->isPluginLoadedMine($plugin2)) {
             if ($function == null)
                 return true;
 
+			$plugin2 = $this->getPluginNameFromOld($plugin2);
+			
             $methods = \ManiaLive\PluginHandler\PluginHandler::getInstance()->getPublicMethods($plugin2);
             //print_r($methods);
             if (\is_array($methods)) {
