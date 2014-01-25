@@ -105,7 +105,7 @@ if (defined("eXp")) {
 
 			$this->frame = new \ManiaLive\Gui\Controls\Frame();
 			$this->frame->setAlign("left", "top");
-			$this->frame->setPosition(2, -(4 * 0.8) - 5);
+			$this->frame->setPosition(0, -(4 * 0.8) - 5);
 			$this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
 			$this->_mainWindow->addComponent($this->frame);
 
@@ -115,9 +115,10 @@ if (defined("eXp")) {
 			$script = new \ManiaLivePlugins\eXpansion\Gui\Structures\Script("Gui/Scripts/TrayWidget");
 			$script->setParam('isMinimized', 'True');
 			$script->setParam('autoCloseTimeout', '7200');
-			$script->setParam('posXMin', -20);
-			$script->setParam('posX', -20);
-			$script->setParam('posXMax', -2);
+			$script->setParam('posXMin', 0);
+			$script->setParam('posX',0);
+			$script->setParam('posXMax', 24);
+			$script->setParam('specilaCase', '');
 			$this->registerScript($script);
 		}
 

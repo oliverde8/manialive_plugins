@@ -86,6 +86,8 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
           } */
         
         $this->xml = simplexml_load_file($this->config->config_file);
+		if (defined("eXp"));
+			$this->xml->hud->posX = $this->xml->hud->posX-19;
         ServerPanel::$xml_config = $this->xml;
 
         $this->enableTickerEvent();
