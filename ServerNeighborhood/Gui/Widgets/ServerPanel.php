@@ -109,10 +109,10 @@ if (defined("eXp")) {
 			$this->frame->setLayout(new \ManiaLib\Gui\Layouts\Column(-1));
 			$this->_mainWindow->addComponent($this->frame);
 
-			$script = new \ManiaLivePlugins\eXpansion\Gui\Structures\Script("../ServerNeighborhood/Gui/Scripts/Time");
+			$script = new \ManiaLivePlugins\eXpansion\Gui\Structures\Script("../oliverde8/ServerNeighborhood/Gui/Scripts/Time");
 			$this->registerScript($script);
 
-			$script = new \ManiaLivePlugins\eXpansion\Gui\Structures\Script("Gui\Scripts\TrayWidget");
+			$script = new \ManiaLivePlugins\eXpansion\Gui\Structures\Script("Gui/Scripts/TrayWidget");
 			$script->setParam('isMinimized', 'True');
 			$script->setParam('autoCloseTimeout', '7200');
 			$script->setParam('posXMin', -20);
