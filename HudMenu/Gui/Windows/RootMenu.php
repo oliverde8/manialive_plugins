@@ -36,8 +36,8 @@ class RootMenu extends Window {
         $this->level = -1;
     }
 
-    public function onDraw(){
-        $this->clearComponents();
+	public function prepareDraw(){
+		$this->clearComponents();
         $posY=0;
 		$forLater = null;
 		$forLaterY = 0;
@@ -73,6 +73,10 @@ class RootMenu extends Window {
 			$forLater->setPositionY($forLaterY);
 			$forLater->setPositionZ(-1);
 		}
+	}
+	
+    public function onDraw(){
+        $this->prepareDraw();
     }
     
     public function afterDraw(){
@@ -127,7 +131,7 @@ class RootMenu extends Window {
 				if(isset($this->sub) && !empty($this->sub)){
 					//Closing the Sub Window and destroying it
 					$this->sub->hide();
-					$this->sub->closeSubs();
+					$this->sub->closeSubs(1);
 					$this->sub->destroy();
 					if(self::$settings->bigIcons){
 						$this->show();
@@ -145,10 +149,11 @@ class RootMenu extends Window {
                         $this->sub->setPosY($this->elementsYPos[$button->getId()]+$this->getPosY());
                     else
                         $this->sub->setPosY($this->getPosY());
+					
+					$this->sub->closeSubs(1);
 					$this->sub->show();
                     $this->sub->afterDraw();
-					$this->sub->closeSubs();
-
+					
 					if(self::$settings->bigIcons){
 						$this->show();
                         $this->afterDraw();
@@ -164,9 +169,7 @@ class RootMenu extends Window {
 						$posX = $this->getPosX()- $button->getSizeX() + self::$settings->marginX;
 					else
 						$posX = $this->getPosX()+ $button->getSizeX() - self::$settings->marginX;
-
-					$posY = $button->getPosY();
-                    
+					
                     if(isset($this->elementsYPos[$button->getId()]) 
                             && self::$settings->openAtLevel)
                         $this->sub->setPosition($posX,$this->elementsYPos[$button->getId()]+$this->getPosY());
@@ -187,10 +190,12 @@ class RootMenu extends Window {
                         && self::$openH[$this->getRecipient()][$button->getLevel()] == $button->getId()
                         && isset(self::$openH[$this->getRecipient()][$button->getLevel()+1])
                         && self::$settings->remeberOpenMenus){
-                    
                     foreach($button->getSubButtons() as $b){
-                        if(self::$openH[$this->getRecipient()][$button->getLevel()+1] == $b->getId()){
-                           $this->sub->onClick($b);                             
+                        if(self::$openH[$this->getRecipient()][$b->getLevel()] == $b->getId()){
+							$this->sub->prepareDraw();
+							$this->sub->afterDraw();
+							$this->sub->onClick($b);     
+							break;
                         }                    
                     }
                 }
@@ -225,10 +230,12 @@ class RootMenu extends Window {
 	/**
 	 * Closes all sub Menus
 	 */
-    public function closeSubs(){
+    public function closeSubs($level = 0){
+		if($level == 0)
+			self::$openH[$this->getRecipient()] = self::$open[$this->getRecipient()];
 		if(isset($this->sub) && !empty($this->sub)){
 			$this->sub->hide();
-			$this->sub->closeSubs();
+			$this->sub->closeSubs($level+1);
 			$this->sub->destroy();
             unset(self::$open[$this->getRecipient()][$this->level+1]);
 		}
@@ -245,7 +252,7 @@ class RootMenu extends Window {
     
     public function destroy() {
         parent::destroy();
-        $this->closeSubs();
+        $this->closeSubs(1);
         $this->actual = null;
         $this->sub = null;
         $this->parent = null;

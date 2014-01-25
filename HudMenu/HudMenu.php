@@ -497,14 +497,8 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
 			$exploded = explode("\\", $pluginName);
 			$newName = "ManiaLivePlugins\\".$pluginName."\\".$exploded[sizeof($exploded)-1];
 			
-			if($this->isPluginLoaded($newName))			
-				echo $pluginName . "FALSE TRUE \n";
-			else 
-				echo $pluginName . "FALSE FALSE \n";
-			
 			return $this->isPluginLoaded($newName);
 		}
-		echo $pluginName . "TRUE \n";
 		return true;
 	}
 	
