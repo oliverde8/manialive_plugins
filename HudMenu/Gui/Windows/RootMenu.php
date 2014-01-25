@@ -231,7 +231,7 @@ class RootMenu extends Window {
 	 * Closes all sub Menus
 	 */
     public function closeSubs($level = 0){
-		if($level == 0)
+		if($level == 0 && isset(self::$open[$this->getRecipient()]))
 			self::$openH[$this->getRecipient()] = self::$open[$this->getRecipient()];
 		if(isset($this->sub) && !empty($this->sub)){
 			$this->sub->hide();

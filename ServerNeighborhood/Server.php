@@ -2,6 +2,7 @@
 
 namespace ManiaLivePlugins\oliverde8\ServerNeighborhood;
 
+use \Maniaplanet\DedicatedServer\Connection;
 use \ManiaLive\Utilities\Time as TmTime;
 
 class Server {
@@ -24,7 +25,7 @@ class Server {
         $this->server_oldOnline = time()-10;
     }
 
-    public function create_fromConnection(\DedicatedApi\Connection $connection, \ManiaLive\Data\Storage $storage) {
+    public function create_fromConnection(Connection $connection, \ManiaLive\Data\Storage $storage) {
 
         $this->server_titleId = $connection->getVersion()->titleId;
         $this->server_login = $storage->serverLogin;
@@ -35,7 +36,7 @@ class Server {
         $this->server_ladder_max = $ladders['LadderServerLimitMax']/1000;
     }
 
-    public function createXML(\DedicatedApi\Connection $connection, \ManiaLive\Data\Storage $storage) {
+    public function createXML(Connection $connection, \ManiaLive\Data\Storage $storage) {
 
         $serverName = $storage->server->name;
         $serverName = \ManiaLib\Utils\Formatting::stripCodes($serverName, 'l');
@@ -110,7 +111,7 @@ class Server {
         return $xml;
     }
 
-    public function saveToDb(\ManiaLive\Database\Connection $db, \DedicatedApi\Connection $connection, \ManiaLive\Data\Storage $storage) {
+    public function saveToDb(\ManiaLive\Database\Connection $db, \Connection $connection, \ManiaLive\Data\Storage $storage) {
 
         $data = $this->createXML($connection, $storage);
 
