@@ -117,7 +117,7 @@ class ServerNeighborhood extends \ManiaLive\PluginHandler\Plugin {
         try{
             $fh = fopen($filename, "w", 0, stream_context_create(array('ftp' => array('overwrite' => true))));
         }catch(\Exception $ex){$fh = false;}
-        while ($fh === false) {
+        while ($fh === false) {	
             if ($tries > 40) {
                 break;
             }

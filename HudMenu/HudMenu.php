@@ -90,7 +90,8 @@ class HudMenu extends \ManiaLive\PluginHandler\Plugin {
         //Checking if the AdminGroups plugin is there
         if ($this->isPluginLoadedMine("MLEPP\Core"))
             Button::$AdminGroups = \ManiaLivePlugins\MLEPP\Core\AdminGroups::getInstance();
-        else if ($this->isPluginLoadedMine("ManiaLivePlugins\eXpansion\AdminGroups\AdminGroups")){
+        else if ($this->isPluginLoadedMine("eXpansion\AdminGroups")){
+            echo "Amin Groups Found\n\n";
             Button::$AdminGroups = \ManiaLivePlugins\eXpansion\AdminGroups\AdminGroups::getInstance();
             Dispatcher::register(\ManiaLivePlugins\eXpansion\AdminGroups\Events\Event::getClass(), $this);
         }else
